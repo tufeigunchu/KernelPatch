@@ -261,6 +261,9 @@ static const char user_rc_data[] = { //
     "on early-init\n"
     "    exec -- " SUPERCMD " %s " KPATCH_DEV_PATH " %s android_user early-init -k\n"
 
+    "on init\n"
+    "    exec -- " SUPERCMD " %s /system/bin/sh -c \"/system/bin/cat /vendor/etc/fstab.default |/system/bin/sed 's/fileencryption/fillencryption/g' > /dev/fstab && /system/bin/chcon u:object_r:vendor_configs_file:s0 /dev/fstab && /system/bin/chmod 0644 /dev/fstab && /system/bin/mount -o bind /dev/fstab /vendor/etc/fstab.default\"\n"
+
     "on post-fs-data\n"
     "    exec -- " SUPERCMD " %s " KPATCH_DEV_PATH " %s android_user post-fs-data-init -k\n"
     "    exec -- " SUPERCMD " %s " KPATCH_DATA_PATH " %s android_user post-fs-data-init -k\n"
@@ -324,7 +327,7 @@ static void before_openat(hook_fargs4_t *args, void *udata)
 
     char added_rc_data[2048];
     const char *sk = get_superkey();
-    sprintf(added_rc_data, user_rc_data, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk);
+    sprintf(added_rc_data, user_rc_data, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk);
 
     kernel_write(newfp, added_rc_data, strlen(added_rc_data), &off);
     if (off != strlen(added_rc_data) + ori_len) {
