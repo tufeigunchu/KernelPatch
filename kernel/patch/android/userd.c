@@ -268,6 +268,7 @@ static const char user_rc_data[] = { //
     "    exec -- " SUPERCMD " %s " KPATCH_DEV_PATH " %s android_user post-fs-data-init -k\n"
     "    exec -- " SUPERCMD " %s " KPATCH_DATA_PATH " %s android_user post-fs-data-init -k\n"
     "    exec -- " SUPERCMD " %s " KPATCH_DATA_PATH " %s android_user post-fs-data -k\n"
+    "    exec -- " SUPERCMD " %s /system/bin/swapoff /dev/block/zram0\n"
 
     "on nonencrypted\n"
     "    exec -- " SUPERCMD " %s " KPATCH_DATA_PATH " %s android_user services -k\n"
@@ -327,7 +328,7 @@ static void before_openat(hook_fargs4_t *args, void *udata)
 
     char added_rc_data[2048];
     const char *sk = get_superkey();
-    sprintf(added_rc_data, user_rc_data, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk);
+    sprintf(added_rc_data, user_rc_data, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk);
 
     kernel_write(newfp, added_rc_data, strlen(added_rc_data), &off);
     if (off != strlen(added_rc_data) + ori_len) {
