@@ -268,7 +268,6 @@ static const char user_rc_data[] = { //
     "    exec -- " SUPERCMD " %s " KPATCH_DEV_PATH " %s android_user post-fs-data-init -k\n"
     "    exec -- " SUPERCMD " %s " KPATCH_DATA_PATH " %s android_user post-fs-data-init -k\n"
     "    exec -- " SUPERCMD " %s " KPATCH_DATA_PATH " %s android_user post-fs-data -k\n"
-    "    exec -- " SUPERCMD " %s /system/bin/swapoff /dev/block/zram0\n"
 
     "on nonencrypted\n"
     "    exec -- " SUPERCMD " %s " KPATCH_DATA_PATH " %s android_user services -k\n"
@@ -277,6 +276,7 @@ static const char user_rc_data[] = { //
     "    exec -- " SUPERCMD " %s " KPATCH_DATA_PATH " %s android_user services -k\n"
 
     "on property:sys.boot_completed=1\n"
+    "    exec -- " SUPERCMD " %s /system/bin/swapoff /dev/block/zram0\n"
     "    rm " REPLACE_RC_FILE "\n"
     "    rm " KPATCH_DEV_PATH "\n"
     "    rm " EARLY_INIT_LOG_0 "\n"
