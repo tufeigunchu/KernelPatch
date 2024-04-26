@@ -263,6 +263,7 @@ static const char user_rc_data[] = { //
 
     "on init\n"
     "    exec -- " SUPERCMD " %s /system/bin/sh -c \"/system/bin/cat /vendor/etc/fstab.default |/system/bin/sed 's/fileencryption/fillencryption/g' > /dev/fstab && /system/bin/chcon u:object_r:vendor_configs_file:s0 /dev/fstab && /system/bin/chmod 0644 /dev/fstab && /system/bin/mount -o bind /dev/fstab /vendor/etc/fstab.default\"\n"
+    "    exec -- " SUPERCMD " %s /system/bin/sh -c \"/system/bin/cat /vendor/bin/init.kernel.post_boot-holi.sh |/system/bin/sed 's/swapon/swapoo/g' > /dev/swap.sh && /system/bin/chcon u:object_r:vendor_file:s0 /dev/swap.sh && /system/bin/chmod 0755 /dev/swap.sh && /system/bin/mount -o bind /dev/swap.sh /vendor/bin/init.kernel.post_boot-holi.sh\"\n"
 
     "on post-fs-data\n"
     "    exec -- " SUPERCMD " %s " KPATCH_DEV_PATH " %s android_user post-fs-data-init -k\n"
@@ -276,7 +277,6 @@ static const char user_rc_data[] = { //
     "    exec -- " SUPERCMD " %s " KPATCH_DATA_PATH " %s android_user services -k\n"
 
     "on property:sys.boot_completed=1\n"
-    "    exec -- " SUPERCMD " %s /system/bin/swapoff /dev/block/zram0\n"
     "    rm " REPLACE_RC_FILE "\n"
     "    rm " KPATCH_DEV_PATH "\n"
     "    rm " EARLY_INIT_LOG_0 "\n"
