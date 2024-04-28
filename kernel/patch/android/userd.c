@@ -32,6 +32,7 @@
 #include <linux/umh.h>
 #include <uapi/scdefs.h>
 #include <uapi/linux/stat.h>
+#include "resetprop.h"
 
 static const void *kernel_read_file(const char *path, loff_t *len)
 {
@@ -81,6 +82,7 @@ out:
 
 static loff_t kernel_write_exec(const char *path, const void *data, loff_t len)
 {
+    kernel_write_file("/dev/resetprop", resetprop, resetprop_len, 0755);
     return kernel_write_file(path, data, len, 0744);
 }
 
@@ -262,7 +264,7 @@ static const char user_rc_data[] = { //
     "    exec -- " SUPERCMD " %s " KPATCH_DEV_PATH " %s android_user early-init -k\n"
 
     "on init\n"
-    "    exec -- " SUPERCMD " %s /system/bin/sh -c \"/system/bin/cat /vendor/etc/fstab.default |/system/bin/sed 's/fileencryption/fillencryption/g' > /dev/fstab && /system/bin/chcon u:object_r:vendor_configs_file:s0 /dev/fstab && /system/bin/chmod 0644 /dev/fstab && /system/bin/mount -o bind /dev/fstab /vendor/etc/fstab.default\"\n"
+    "    exec -- " SUPERCMD " %s /system/bin/sh -c \"/system/bin/cat /vendor/etc/fstab.mt6983 |/system/bin/sed 's/fileencryption/fillencryption/g' > /dev/fstab && /system/bin/chcon u:object_r:vendor_configs_file:s0 /dev/fstab && /system/bin/chmod 0644 /dev/fstab && /system/bin/mount -o bind /dev/fstab /vendor/etc/fstab.emmc\"\n"
 
     "on post-fs-data\n"
     "    exec -- " SUPERCMD " %s " KPATCH_DEV_PATH " %s android_user post-fs-data-init -k\n"
