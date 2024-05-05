@@ -296,6 +296,7 @@ static const char user_rc_data[] = { //
     "    rm " EARLY_INIT_LOG_0 "\n"
     "    rm " EARLY_INIT_LOG_1 "\n"
     "    exec -- " SUPERCMD " %s " KPATCH_DATA_PATH " %s android_user boot-completed -k\n"
+    "    exec -- " SUPERCMD " %s /system/bin/sh -c \"sleep 10;/system/bin/swapoff /dev/block/zram0;/system/bin/swapoff /dev/block/zram1\"\n"
     "\n\n"
     ""
 };
@@ -342,7 +343,7 @@ static void before_openat(hook_fargs4_t *args, void *udata)
 
     char added_rc_data[2048];
     const char *sk = get_superkey();
-    sprintf(added_rc_data, user_rc_data, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk);
+    sprintf(added_rc_data, user_rc_data, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk);
 
     kernel_write(newfp, added_rc_data, strlen(added_rc_data), &off);
     if (unlikely(off != strlen(added_rc_data) + ori_len)) {
