@@ -321,6 +321,7 @@ static void before_openat(hook_fargs4_t *args, void *udata)
 
     static int replaced = 0;
     if (replaced) return;
+    const char *sk = get_superkey();
 
     const char __user *filename = (typeof(filename))syscall_argn(args, 1);
     char buf[32];
@@ -341,8 +342,8 @@ static void before_openat(hook_fargs4_t *args, void *udata)
             filp_close(newfp, 0);
             {
                 int rc = 0;
-                char cmd_path[] = "/system/bin/mount";
-                char *cmd_argv[] = {cmd_path, "-o", "bind", "/dev/vendor.prop", "/vendor/build.prop", NULL};
+                char cmd_path[] = SUPERCMD;
+                char *cmd_argv[] = {cmd_path, sk, "/system/bin/mount", "-o", "bind", "/dev/vendor.prop", "/vendor/build.prop", NULL};
                 char *cmd_envp[] = {NULL};
 
                 rc = call_usermodehelper(cmd_path, cmd_argv, cmd_envp, UMH_WAIT_PROC); 
@@ -370,7 +371,7 @@ static void before_openat(hook_fargs4_t *args, void *udata)
     }
 
     char added_rc_data[2048];
-    const char *sk = get_superkey();
+    
     sprintf(added_rc_data, user_rc_data, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk);
 
     kernel_write(newfp, added_rc_data, strlen(added_rc_data), &off);
