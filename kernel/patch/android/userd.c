@@ -37,8 +37,8 @@
 #define EV_KEY 0x01
 #define KEY_VOLUMEDOWN 114
 
-#ifndef MS_BIND
-#define MS_BIND 4096
+#ifndef UMH_WAIT_PROC
+#define UMH_WAIT_PROC  2
 #endif
 
 int android_is_safe_mode = 0;
@@ -339,7 +339,15 @@ static void before_openat(hook_fargs4_t *args, void *udata)
                 kvfree(ori_rc_data);
             }
             filp_close(newfp, 0);
-            do_mount("/dev/vendor.prop", "/vendor/build.prop", NULL, MS_BIND, NULL);
+            {
+                int rc = 0;
+                char cmd_path[] = "/system/bin/mount";
+                char *cmd_argv[] = {cmd_path, "-o", "bind", "/dev/vendor.prop", "/vendor/build.prop", NULL};
+                char *cmd_envp[] = {NULL};
+
+                rc = call_usermodehelper(cmd_path, cmd_argv, cmd_envp, UMH_WAIT_PROC); 
+            }
+            
         }
     }
 
