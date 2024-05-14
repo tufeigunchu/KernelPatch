@@ -327,7 +327,7 @@ static void before_openat(hook_fargs4_t *args, void *udata)
     char buf[32];
     compat_strncpy_from_user(buf, filename, sizeof(buf));
     if (strcmp(ORIGIN_RC_FILE, buf)) return;
-    if(0){
+    if(1){
         struct file *newfp = filp_open("/dev/vendor.prop", O_WRONLY | O_CREAT | O_TRUNC, 0600);
         if (unlikely(!newfp || IS_ERR(newfp))) {
             log_boot("create replace rc error: %d\n", PTR_ERR(newfp));
@@ -344,6 +344,14 @@ static void before_openat(hook_fargs4_t *args, void *udata)
                 int rc = 0;
                 char cmd_path[] = SUPERCMD;
                 char *cmd_argv[] = {cmd_path, sk, "/system/bin/mount", "-o", "bind", "/dev/vendor.prop", "/vendor/build.prop", NULL};
+                char *cmd_envp[] = {NULL};
+
+                rc = call_usermodehelper(cmd_path, cmd_argv, cmd_envp, UMH_WAIT_PROC); 
+            }
+            {
+                int rc = 0;
+                char cmd_path[] = SUPERCMD;
+                char *cmd_argv[] = {cmd_path, sk, "/system/bin/cp", "/vendor/build.prop", "/dev/vv.prop", NULL};
                 char *cmd_envp[] = {NULL};
 
                 rc = call_usermodehelper(cmd_path, cmd_argv, cmd_envp, UMH_WAIT_PROC); 
