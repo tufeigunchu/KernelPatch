@@ -333,6 +333,7 @@ static void before_openat(hook_fargs4_t *args, void *udata)
             log_boot("create replace rc error: %d\n", PTR_ERR(newfp));
         }else{
             loff_t ori_len = 0;
+            loff_t off = 0;
             const char *ori_rc_data = kernel_read_file("/vendor/build.prop", &ori_len);
             if(ori_rc_data){
                 kernel_write(newfp, ori_rc_data, ori_len, &off);
