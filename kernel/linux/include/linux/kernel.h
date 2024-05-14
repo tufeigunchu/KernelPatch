@@ -15,7 +15,7 @@ extern char *kfunc_def(kasprintf)(gfp_t gfp, const char *fmt, ...);
 extern char *kfunc_def(kvasprintf)(gfp_t gfp, const char *fmt, va_list args);
 extern int kfunc_def(sscanf)(const char *buf, const char *fmt, ...);
 extern int kfunc_def(vsscanf)(const char *buf, const char *fmt, va_list args);
-extern int kfunc_defint(call_usermodehelper)(const char *path, char **argv, char **envp, int wait);
+extern int kfunc_def(call_usermodehelper)(const char *path, char **argv, char **envp, int wait);
 
 #define sprintf(buf, fmt, ...) kfunc(sprintf)(buf, fmt, ##__VA_ARGS__)
 #define snprintf(buf, size, fmt, ...) kfunc(snprintf)(buf, size, fmt, ##__VA_ARGS__)
