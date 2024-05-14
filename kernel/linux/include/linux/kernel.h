@@ -15,12 +15,14 @@ extern char *kfunc_def(kasprintf)(gfp_t gfp, const char *fmt, ...);
 extern char *kfunc_def(kvasprintf)(gfp_t gfp, const char *fmt, va_list args);
 extern int kfunc_def(sscanf)(const char *buf, const char *fmt, ...);
 extern int kfunc_def(vsscanf)(const char *buf, const char *fmt, va_list args);
+extern long kfunc_def(do_mount)(const char *, const char __user *, const char *, unsigned long, void *);
 
 #define sprintf(buf, fmt, ...) kfunc(sprintf)(buf, fmt, ##__VA_ARGS__)
 #define snprintf(buf, size, fmt, ...) kfunc(snprintf)(buf, size, fmt, ##__VA_ARGS__)
 #define scnprintf(buf, size, fmt, ...) kfunc(scnprintf)(buf, size, fmt, ##__VA_ARGS__)
 #define kasprintf(buf, fmt, ...) kfunc(kasprintf)(buf, fmt, ##__VA_ARGS__)
 #define sscanf(buf, fmt, ...) kfunc(sscanf)(buf, fmt, ##__VA_ARGS__)
+#define do_mount(const char *, const char __user *, const char *, unsigned long, void *) kfunc(do_mount)(const char *, const char __user *, const char *, unsigned long, void *)
 
 static inline int vsprintf(char *buf, const char *fmt, va_list args)
 {
@@ -45,6 +47,11 @@ static inline char *kvasprintf(gfp_t gfp, const char *fmt, va_list args)
 static inline int vsscanf(const char *buf, const char *fmt, va_list args)
 {
     kfunc_direct_call(vsscanf, buf, fmt, args);
+}
+
+static inline long do_mount(const char *a, const char __user *b, const char *c, unsigned long d, void *e)
+{
+    kfunc_direct_call(do_mount, a,b,c,d,e);
 }
 
 #endif

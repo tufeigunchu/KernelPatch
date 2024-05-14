@@ -40,8 +40,6 @@
 #ifndef MS_BIND
 #define MS_BIND 4096
 #endif
-extern long do_mount(const char *, const char __user *,
-             const char *, unsigned long, void *);
 
 int android_is_safe_mode = 0;
 KP_EXPORT_SYMBOL(android_is_safe_mode);
