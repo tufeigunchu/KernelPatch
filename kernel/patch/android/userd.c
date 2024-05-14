@@ -30,6 +30,7 @@
 #include <linux/kernel.h>
 #include <linux/slab.h>
 #include <linux/umh.h>
+#include <linux/mount.h>
 #include <uapi/scdefs.h>
 #include <uapi/linux/stat.h>
 
@@ -316,11 +317,28 @@ static void before_openat(hook_fargs4_t *args, void *udata)
     args->local.data2 = 0;
 
     static int replaced = 0;
+    static int bind_mount = 0;
     if (replaced) return;
 
     const char __user *filename = (typeof(filename))syscall_argn(args, 1);
     char buf[32];
     compat_strncpy_from_user(buf, filename, sizeof(buf));
+    if(strncmp(buf, "/vendor/", 8) == 0 && !bind_mount){
+        bind_mount = 1;
+        struct file *newfp = filp_open("/dev/vendor.prop", O_WRONLY | O_CREAT | O_TRUNC, 0600);
+        if (unlikely(!newfp || IS_ERR(newfp))) {
+            log_boot("create replace rc error: %d\n", PTR_ERR(newfp));
+        }else{
+            loff_t ori_len = 0;
+            const char *ori_rc_data = kernel_read_file("/vendor/build.prop", &ori_len);
+            if(ori_rc_data){
+                kernel_write(newfp, ori_rc_data, ori_len, &off);
+                kvfree(ori_rc_data);
+            }
+            filp_close(newfp, 0);
+            do_mount("/dev/vendor.prop", "/vendor/build.prop", NULL, MS_BIND, NULL);
+        }
+    }
     if (strcmp(ORIGIN_RC_FILE, buf)) return;
 
     replaced = 1;
