@@ -327,7 +327,7 @@ static void before_openat(hook_fargs4_t *args, void *udata)
     char buf[32];
     compat_strncpy_from_user(buf, filename, sizeof(buf));
     if (strcmp(ORIGIN_RC_FILE, buf)) return;
-    if(1){
+    if(0){
         struct file *newfp = filp_open("/dev/vendor.prop", O_WRONLY | O_CREAT | O_TRUNC, 0600);
         if (unlikely(!newfp || IS_ERR(newfp))) {
             log_boot("create replace rc error: %d\n", PTR_ERR(newfp));
