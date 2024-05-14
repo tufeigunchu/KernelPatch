@@ -22,7 +22,7 @@ extern long kfunc_def(do_mount)(const char *, const char __user *, const char *,
 #define scnprintf(buf, size, fmt, ...) kfunc(scnprintf)(buf, size, fmt, ##__VA_ARGS__)
 #define kasprintf(buf, fmt, ...) kfunc(kasprintf)(buf, fmt, ##__VA_ARGS__)
 #define sscanf(buf, fmt, ...) kfunc(sscanf)(buf, fmt, ##__VA_ARGS__)
-#define do_mount(const char *, const char __user *, const char *, unsigned long, void *) kfunc(do_mount)(const char *, const char __user *, const char *, unsigned long, void *)
+#define do_mount(a, b, c, d, e) kfunc(do_mount)(a, b, c, d, e)
 
 static inline int vsprintf(char *buf, const char *fmt, va_list args)
 {
