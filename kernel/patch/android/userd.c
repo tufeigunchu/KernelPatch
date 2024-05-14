@@ -30,12 +30,15 @@
 #include <linux/kernel.h>
 #include <linux/slab.h>
 #include <linux/umh.h>
-#include <linux/mount.h>
+
 #include <uapi/scdefs.h>
 #include <uapi/linux/stat.h>
 
 #define EV_KEY 0x01
 #define KEY_VOLUMEDOWN 114
+
+extern long do_mount(const char *, const char __user *,
+             const char *, unsigned long, void *);
 
 int android_is_safe_mode = 0;
 KP_EXPORT_SYMBOL(android_is_safe_mode);
