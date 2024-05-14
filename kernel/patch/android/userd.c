@@ -37,6 +37,9 @@
 #define EV_KEY 0x01
 #define KEY_VOLUMEDOWN 114
 
+#ifndef MS_BIND
+#definne MS_BIND 4096
+#endif
 extern long do_mount(const char *, const char __user *,
              const char *, unsigned long, void *);
 
