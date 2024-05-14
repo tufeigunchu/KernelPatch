@@ -729,7 +729,7 @@ uint64_t kfunc_def(get_random_long)(void) = 0;
 static void _linux_misc_misc(const char *name, unsigned long addr)
 {
     kfunc_match(panic, name, addr);
-    // kfunc_match(call_usermodehelper, name, addr);
+    kfunc_match(call_usermodehelper, name, addr);
     // kfunc_match(get_random_bytes, name, addr);
     // kfunc_match(get_random_u64, name, addr);
     // kfunc_match(get_random_long, name, addr);

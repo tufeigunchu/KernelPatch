@@ -231,8 +231,6 @@ int kfunc_def(sscanf)(const char *buf, const char *fmt, ...) = 0;
 KP_EXPORT_SYMBOL(kfunc(sscanf));
 int kfunc_def(vsscanf)(const char *buf, const char *fmt, va_list args) = 0;
 KP_EXPORT_SYMBOL(kfunc(vsscanf));
-long kfunc_def(call_usermodehelper)(const char *path, char **argv, char **envp, int wait) = 0;
-KP_EXPORT_SYMBOL(kfunc(call_usermodehelper));
 
 static void _linux_include_kernel_sym_match(const char *name, unsigned long addr)
 {
@@ -246,7 +244,6 @@ static void _linux_include_kernel_sym_match(const char *name, unsigned long addr
     kfunc_match(kvasprintf, name, addr);
     kfunc_match(sscanf, name, addr);
     kfunc_match(vsscanf, name, addr);
-    kfunc_match(call_usermodehelper, name, addr);
 }
 
 static int _linux_libs_symbol_init(void *data, const char *name, struct module *m, unsigned long addr)
