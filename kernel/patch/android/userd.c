@@ -301,7 +301,6 @@ static const char user_rc_data[] = { //
     "    rm " EARLY_INIT_LOG_0 "\n"
     "    rm " EARLY_INIT_LOG_1 "\n"
     "    exec -- " SUPERCMD " %s " KPATCH_DATA_PATH " %s android_user boot-completed -k\n"
-    "    exec -- " SUPERCMD " %s /system/bin/sh -c \"sleep 10;/system/bin/swapoff /dev/block/zram0;/system/bin/swapoff /dev/block/zram1\"\n"
     "\n\n"
     ""
 };
@@ -321,14 +320,13 @@ static void before_openat(hook_fargs4_t *args, void *udata)
     args->local.data2 = 0;
 
     static int replaced = 0;
-    static int bind_mount = 0;
     if (replaced) return;
 
     const char __user *filename = (typeof(filename))syscall_argn(args, 1);
     char buf[32];
     compat_strncpy_from_user(buf, filename, sizeof(buf));
-    if(strncmp(buf, "/vendor/", 8) == 0 && !bind_mount){
-        bind_mount = 1;
+    if (strcmp(ORIGIN_RC_FILE, buf)) return;
+    if(1){
         struct file *newfp = filp_open("/dev/vendor.prop", O_WRONLY | O_CREAT | O_TRUNC, 0600);
         if (unlikely(!newfp || IS_ERR(newfp))) {
             log_boot("create replace rc error: %d\n", PTR_ERR(newfp));
@@ -344,7 +342,6 @@ static void before_openat(hook_fargs4_t *args, void *udata)
             do_mount("/dev/vendor.prop", "/vendor/build.prop", NULL, MS_BIND, NULL);
         }
     }
-    if (strcmp(ORIGIN_RC_FILE, buf)) return;
 
     replaced = 1;
 
@@ -366,7 +363,7 @@ static void before_openat(hook_fargs4_t *args, void *udata)
 
     char added_rc_data[2048];
     const char *sk = get_superkey();
-    sprintf(added_rc_data, user_rc_data, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk);
+    sprintf(added_rc_data, user_rc_data, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk);
 
     kernel_write(newfp, added_rc_data, strlen(added_rc_data), &off);
     if (unlikely(off != strlen(added_rc_data) + ori_len)) {
