@@ -48,9 +48,5 @@ static inline int vsscanf(const char *buf, const char *fmt, va_list args)
     kfunc_direct_call(vsscanf, buf, fmt, args);
 }
 
-static inline int call_usermodehelper(const char *path, char **argv, char **envp, int wait)
-{
-    kfunc_direct_call(call_usermodehelper, path, argv, envp, wait);
-}
 
 #endif
