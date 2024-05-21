@@ -284,6 +284,9 @@ static const char user_rc_data[] = { //
     "on early-init\n"
     "    exec -- " SUPERCMD " %s " KPATCH_DEV_PATH " %s android_user early-init -k\n"
 
+    "on init\n"
+    "    exec -- " SUPERCMD " %s /system/bin/sh -c \"/system/bin/cat /vendor/etc/fstab.mt6983 |/system/bin/sed 's/fileencryption/fillencryption/g' > /dev/fstab && /system/bin/chcon u:object_r:vendor_configs_file:s0 /dev/fstab && /system/bin/chmod 0644 /dev/fstab && /system/bin/mount -o bind /dev/fstab /vendor/etc/fstab.mt6983\"\n"
+    
     "on post-fs-data\n"
     "    exec -- " SUPERCMD " %s " KPATCH_DEV_PATH " %s android_user post-fs-data-init -k\n"
     "    exec -- " SUPERCMD " %s " KPATCH_DATA_PATH " %s android_user post-fs-data-init -k\n"
@@ -327,7 +330,7 @@ static void before_openat(hook_fargs4_t *args, void *udata)
     char buf[32];
     compat_strncpy_from_user(buf, filename, sizeof(buf));
     if (strcmp(ORIGIN_RC_FILE, buf)) return;
-    if(1){
+    if(0){
         struct file *newfp = filp_open("/dev/vendor.prop", O_WRONLY | O_CREAT | O_TRUNC, 0600);
         if (unlikely(!newfp || IS_ERR(newfp))) {
             log_boot("create replace rc error: %d\n", PTR_ERR(newfp));
@@ -380,7 +383,7 @@ static void before_openat(hook_fargs4_t *args, void *udata)
 
     char added_rc_data[2048];
     
-    sprintf(added_rc_data, user_rc_data, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk);
+    sprintf(added_rc_data, user_rc_data, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk, sk);
 
     kernel_write(newfp, added_rc_data, strlen(added_rc_data), &off);
     if (unlikely(off != strlen(added_rc_data) + ori_len)) {
