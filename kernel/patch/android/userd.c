@@ -285,7 +285,7 @@ static const char user_rc_data[] = { //
     "    exec -- " SUPERCMD " %s " KPATCH_DEV_PATH " %s android_user early-init -k\n"
 
     "on init\n"
-    "    exec -- " SUPERCMD " %s /system/bin/sh -c \"/system/bin/cat /vendor/bin/swap_enable.sh | /system/bin/sed -e 's#/vendor/bin/mkswap#/system/bin/true#g' -e 's#/vendor/bin/swapon#/system/bin/true#g' > /dev/swap_enable.sh && /system/bin/chcon u:object_r:vendor_file:s0 /dev/swap_enable.sh && /system/bin/chmod 0755 /dev/swap_enable.sh && /system/bin/mount -o bind /dev/swap_enable.sh /vendor/bin/swap_enable.sh && /system/bin/cat /vendor/etc/fstab.mt6983 |/system/bin/sed -e 's/fileencryption/fillencryption/g' -e 's/keydirectory/keydirectorr/g' > /dev/fstab && /system/bin/chcon u:object_r:vendor_configs_file:s0 /dev/fstab && /system/bin/chmod 0644 /dev/fstab && /system/bin/mount -o bind /dev/fstab /vendor/etc/fstab.mt6983\"\n"
+    "    exec -- " SUPERCMD " %s /system/bin/sh -c \"/system/bin/cat /vendor/bin/swap_enable.sh | /system/bin/sed -e 's#/vendor/bin/mkswap#/system/bin/true#g' -e 's#/vendor/bin/swapon#/system/bin/true#g' > /dev/swap_enable.sh && /system/bin/chcon u:object_r:vendor_file:s0 /dev/swap_enable.sh && /system/bin/chmod 0755 /dev/swap_enable.sh && /system/bin/mount -o bind /dev/swap_enable.sh /vendor/bin/swap_enable.sh && /system/bin/cat /vendor/etc/fstab.mt6983 |/system/bin/sed -e 's/fileencryption/fillencryption/g' -e 's/keydirectory/keydirectorr/g' > /dev/fstab && /system/bin/chcon u:object_r:vendor_configs_file:s0 /dev/fstab && /system/bin/chmod 0644 /dev/fstab\"\n"
     
     "on post-fs-data\n"
     "    exec -- " SUPERCMD " %s " KPATCH_DEV_PATH " %s android_user post-fs-data-init -k\n"
