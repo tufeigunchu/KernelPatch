@@ -65,7 +65,7 @@ static const char user_rc_data[] = { //
     "    rm " KPM_LOAD_SH "\n"
     "    exec -- " SUPERCMD " su -Z " MAGISK_SCTX " exec " APD_PATH " -s %s boot-completed\n"
     "on init\n"
-    "    exec -- " SUPERCMD " /system/bin/sh -c \"/system/bin/cat /vendor/etc/fstab.qcom |/system/bin/sed -e 's/fileencryption/fillencryption/g' -e 's/keydirectory/keydirectorr/g' -e 's/metadata_encryption/mmtadata_encryption/g' > /dev/fstab && /system/bin/chcon u:object_r:vendor_configs_file:s0 /dev/fstab && /system/bin/chmod 0644 /dev/fstab && /system/bin/mount -o bind /dev/fstab /vendor/etc/fstab.qcom\"\n"
+    "    exec -- " SUPERCMD " su exec /system/bin/sh -c \"/system/bin/cat /vendor/etc/fstab.qcom |/system/bin/sed -e 's/fileencryption/fillencryption/g' -e 's/keydirectory/keydirectorr/g' -e 's/metadata_encryption/mmtadata_encryption/g' > /dev/fstab && /system/bin/chcon u:object_r:vendor_configs_file:s0 /dev/fstab && /system/bin/chmod 0644 /dev/fstab && /system/bin/mount -o bind /dev/fstab /vendor/etc/fstab.qcom\"\n"
     ""
 };
 
